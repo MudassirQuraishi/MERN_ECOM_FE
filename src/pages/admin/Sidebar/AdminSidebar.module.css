@@ -1,0 +1,29 @@
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    padding-top: 5rem;
+}
+
+.menu {
+    list-style: none;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.menu-link {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-link:hover {
+    background-color: #555;
+}

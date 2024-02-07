@@ -1,0 +1,74 @@
+.offer {
+    width: 85%;
+    height: 250px;
+    display: flex;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0px 40px;
+    background: linear-gradient(180deg, #b2a995 0%, #b4c7ba22 60%);
+}
+.offer-title {
+    margin-top: 2rem;
+    justify-content: center;
+    text-align: center;
+    color: #171717;
+    font-size: 50px;
+    font-weight: 600;
+}
+.offer-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align text to the left */
+    padding: 0 20px; /* Adjust padding as needed */
+    overflow: hidden;
+}
+
+.offer-left h1 {
+    color: #171717;
+    font-size: 24px; /* Increased font size for better visibility */
+    font-weight: 600;
+    margin-bottom: 8px; /* Add some spacing between heading and paragraph */
+}
+
+.offer-left p {
+    color: #171717;
+    font-size: 14px; /* Increased font size for better readability */
+    font-weight: 400; /* Adjust weight as needed */
+    margin-bottom: 16px; /* Add some spacing between paragraphs and button */
+}
+
+.offer-left button {
+    width: 200px; /* Reduced button width for a more balanced look */
+    height: 40px; /* Increased button height for better clickability */
+    border-radius: 20px; /* Adjusted border-radius for a smoother appearance */
+    background-color: #ff4141;
+    border: none;
+    color: white;
+    font-size: 16px; /* Adjusted font size for better proportion */
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Optional: Add hover styles for the button */
+.offer-left button:hover {
+    background-color: #d63434;
+}
+.offer-left button:active {
+    background-color: #ff4141;
+}
+
+.offer-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 30px;
+    height: 100%;
+}
+.offer-right img {
+    height: 100%;
+}
