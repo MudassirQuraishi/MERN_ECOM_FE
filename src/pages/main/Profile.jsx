@@ -21,12 +21,12 @@ const Profile = () => {
                 <div className={classes["form-container"]}>
                     <div className={classes["form-group"]}>
                         <label>Username:</label>
-                        <p>{username}</p>
+                        <p>{username ? username : ''}</p>
                     </div>
 
                     <div className={classes["form-group"]}>
                         <label>Email:</label>
-                        <p>{email}</p>
+                        <p>{email ? email : ''} </p>
                     </div>
 
                     <div className={classes["form-group"]}>

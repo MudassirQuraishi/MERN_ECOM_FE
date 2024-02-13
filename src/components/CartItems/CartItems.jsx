@@ -8,6 +8,7 @@ const CartItems = () => {
     const subTotal = getCartAmount();
     const shippingFee = subTotal > 100 ? 'FREE' : 10;
     const cartTotal = shippingFee === 'FREE' ? subTotal : shippingFee + subTotal;
+    console.log(cartItems)
 
     return (
         <div className={classes["cart-items"]}>

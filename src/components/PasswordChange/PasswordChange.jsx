@@ -17,6 +17,11 @@ const Profile = () => {
         check: false,
         overall: false
     })
+    const resetForm = () => {
+        oldPassword.current.ref = '';
+        newPassword.current.ref = '';
+        newPasswordCheck.current.ref = '';
+    }
     const validateOldPasswordHanlder = () => {
         if (oldPassword.current.value.trim() === '' || oldPassword.current.value.trim().length < 8) {
             return setErrors((prev) => ({
@@ -79,22 +84,7 @@ const Profile = () => {
                     newPassword: newPassword.current.value
 
                 }
-                const response = await axios.post('http://localhost:8080/auth/reset-password', formData,
-                    {
-                        headers: {
-                            Authorization: userCtx.token
-                        }
-                    })
-                if (response.status === 200) {
-                    if (userCtx.token !== null) {
-                        navigator('/profile');
-                    } else {
-                        navigator('/register/login');
-                    }
-                    toast.info('Password Changed Successfully');
-
-                }
-                const token = userCtx.fetchToken('auth-token');
+                const token = userCtx.getToken('auth-token');
                 if (token) {
                     const response = await axios.post('http://localhost:8080/auth/reset-password', formData,
                         {
@@ -102,11 +92,14 @@ const Profile = () => {
                                 Authorization: token
                             }
                         })
+                    console.log(response)
                     if (response.status === 200) {
                         if (userCtx.token !== null) {
                             navigator('/profile');
+                            resetForm()
                         } else {
                             navigator('/register/login');
+                            resetForm()
                         }
                         toast.info('Password Changed Successfully');
                     }
@@ -114,7 +107,34 @@ const Profile = () => {
 
             }
             catch (error) {
-                console.log(error)
+                if (error.response.status === 400) {
+                    toast.warn('Bad Credentials. Please try again later');
+                    userCtx.removeToken()
+                }
+                else if (error.response.status === 401) {
+                    toast.warn('Expired or Invalid Token');
+                    userCtx.removeToken()
+                    navigator('/register/login');
+                    resetForm()
+                }
+                else if (error.response.status === 403) {
+                    toast.warn('You are not authorized to access this page');
+                    userCtx.removeToken()
+                    navigator('/register/login');
+                    resetForm()
+                }
+                else if (error.response.status === 404) {
+                    toast.warn('No Data Found');
+                    userCtx.removeToken()
+                    navigator('/register/login');
+                    resetForm()
+                }
+                else if (error.response.status === 500) {
+                    toast.warn('Oopps!! Something went wrong');
+                    userCtx.removeToken()
+                    navigator('/register/login');
+                    resetForm()
+                }
             }
 
 
