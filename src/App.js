@@ -52,7 +52,7 @@ function App() {
         "/admin/login",
         "/admin/dashboard",
         "/admin/home",
-        "/admin/",
+        "/admin",
     ];
     const path = window.location.pathname;
     return (

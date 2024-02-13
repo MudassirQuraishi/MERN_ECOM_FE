@@ -19,7 +19,8 @@ const UserContextProvider = (props) => {
                 const response = await axios.get(`http://localhost:8080/api/get-user/${token}`);
                 setUser(response.data.USER_DATA);
             } catch (error) {
-                console.log(error);
+                alert('Session Expired. Please Login again')
+                removeTokenHandler()
             }
         };
 
@@ -48,7 +49,7 @@ const UserContextProvider = (props) => {
 
     const removeTokenHandler = () => {
         setToken(null);
-        if (localStorage.get('auth-token')) {
+        if (localStorage.getItem('auth-token')) {
             localStorage.removeItem('auth-token');
         }
 

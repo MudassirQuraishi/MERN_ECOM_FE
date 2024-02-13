@@ -1,127 +1,142 @@
-// HomePage.js
+// AdminPage.jsx
 
-import React, { useState } from 'react';
-import classes from './HomePage.module.css'; // Import the CSS module
+import React, { useRef } from 'react';
+import styles from './HomePage.module.css';
 
-const HomePage = () => {
-    const [formData, setFormData] = useState({
-        productName: '',
-        category: '',
-        imageUrl: '',
-        newPrice: '',
-        oldPrice: '',
-        tags: [],
-    });
+const AdminPage = () => {
+    const productNameRef = useRef(null);
+    const categoryRef = useRef(null);
+    const originalPriceRef = useRef(null);
+    const discountedPriceRef = useRef(null);
+    const mainImageRef = useRef(null);
+    const sideImagesRef = useRef(null);
+    const tagsRef = useRef(null);
 
-    const handleAddProduct = () => {
-        // Handle product addition logic here
-        console.log('Product added:', formData);
-        // Reset the form after submission
-        setFormData({
-            productName: '',
-            category: '',
-            imageUrl: '',
-            newPrice: '',
-            oldPrice: '',
-            tags: [],
+    const handleMainImageChange = (e) => {
+        const file = e.target.files[0];
+        mainImageRef.current = file;
+    };
+
+    const handleSideImageChange = (e) => {
+        const files = e.target.files;
+        sideImagesRef.current = [...files];
+    };
+
+    const handleAddProduct = (e) => {
+        e.preventDefault();
+        if (!productNameRef.current.value || !categoryRef.current.value || !originalPriceRef.current.value || !discountedPriceRef.current.value || !mainImageRef.current || !sideImagesRef.current || !tagsRef.current.value) {
+            alert("Please fill in all the required fields.");
+            return;
+        }
+        // Get values from refs
+        const productName = productNameRef.current.value;
+        const category = categoryRef.current.value;
+        const originalPrice = originalPriceRef.current.value;
+        const discountedPrice = discountedPriceRef.current.value;
+        const mainImage = mainImageRef.current;
+        const sideImages = sideImagesRef.current;
+        const tags = tagsRef.current.value;
+
+        // Split the tags by a comma and trim extra spaces
+        const tagsArray = tags.split(',').map(tag => tag.trim());
+
+        // Add product logic goes here
+        // You can use the values and tagsArray to send the data to the server
+        console.log('Product Data:', {
+            productName,
+            category,
+            originalPrice,
+            discountedPrice,
+            mainImage,
+            sideImages,
+            tags: tagsArray
         });
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    const handleTagChange = (e) => {
-        const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
-        setFormData((prevData) => ({
-            ...prevData,
-            tags: selectedTags,
-        }));
+        productNameRef.current.value = '';
+        categoryRef.current.value = 'default';
+        originalPriceRef.current.value = '';
+        discountedPriceRef.current.value = '';
+        mainImageRef.current.value = null;
+        sideImagesRef.current.value = null;
+        tagsRef.current.value = '';
     };
 
     return (
-        <div className={`page ${classes['home-page']}`}>
-            <h1>Home Page</h1>
-            <form className={classes['product-form']} onSubmit={(e) => e.preventDefault()}>
-                <div className={classes['form-group']}>
-                    <label className={classes['form-label']}>Product Name:</label>
+        <div className={styles.container}>
+            <h1>Add Product</h1>
+            <form onSubmit={handleAddProduct}>
+                <label className={styles.label}>
+                    Product Name:
                     <input
                         type="text"
-                        name="productName"
-                        className={classes['form-input']}
-                        value={formData.productName}
-                        onChange={handleInputChange}
+                        className={styles.inputField}
+                        ref={productNameRef}
                     />
-                </div>
+                </label>
 
-                <div className={classes['form-group']}>
-                    <label className={classes['form-label']}>Category:</label>
-                    <input
-                        type="text"
-                        name="category"
-                        className={classes['form-input']}
-                        value={formData.category}
-                        onChange={handleInputChange}
-                    />
-                </div>
-
-                <div className={classes['form-group']}>
-                    <label className={classes['form-label']}>Image URL:</label>
-                    <input
-                        type="text"
-                        name="imageUrl"
-                        className={classes['form-input']}
-                        value={formData.imageUrl}
-                        onChange={handleInputChange}
-                    />
-                </div>
-
-                <div className={classes['form-group']}>
-                    <label className={classes['form-label']}>New Price:</label>
-                    <input
-                        type="text"
-                        name="newPrice"
-                        className={classes['form-input']}
-                        value={formData.newPrice}
-                        onChange={handleInputChange}
-                    />
-                </div>
-
-                <div className={classes['form-group']}>
-                    <label className={classes['form-label']}>Old Price:</label>
-                    <input
-                        type="text"
-                        name="oldPrice"
-                        className={classes['form-input']}
-                        value={formData.oldPrice}
-                        onChange={handleInputChange}
-                    />
-                </div>
-
-                <div className={classes['form-group']}>
-                    <label className={classes['form-label']}>Tags:</label>
+                <label className={styles.label}>
+                    Category:
                     <select
-                        name="tags"
-                        multiple
-                        className={classes['form-dropdown']}
-                        value={formData.tags}
-                        onChange={handleTagChange}
+                        className={styles.inputField}
+                        ref={categoryRef}
+                        defaultValue={'default'}
                     >
-                        <option value="tag1">Tag 1</option>
-                        <option value="tag2">Tag 2</option>
-                        <option value="tag3">Tag 3</option>
+                        <option value="default" disabled>Select a category</option>
+                        <option value="men">Men</option>
+                        <option value="women">Women</option>
+                        <option value="kids">Kids</option>
                     </select>
-                </div>
+                </label>
 
-                <button
-                    type="submit"
-                    className={classes['form-button']}
-                    onClick={handleAddProduct}
-                >
+
+
+                <label className={styles.label}>
+                    Original Price:
+                    <input
+                        type="number"
+                        className={styles.inputField}
+                        ref={originalPriceRef}
+                    />
+                </label>
+
+                <label className={styles.label}>
+                    Discounted Price:
+                    <input
+                        type="number"
+                        className={styles.inputField}
+                        ref={discountedPriceRef}
+                    />
+                </label>
+
+                <label className={styles.label}>
+                    Main Image:
+                    <input
+                        type="file"
+                        className={`${styles.inputField} ${styles.fileInput}`}
+                        onChange={handleMainImageChange}
+                    />
+                </label>
+
+                <label className={styles.label}>
+                    Side Images (up to 5):
+                    <input
+                        type="file"
+                        className={`${styles.inputField} ${styles.fileInput}`}
+                        multiple
+                        onChange={handleSideImageChange}
+                    />
+                </label>
+
+                <label className={styles.label}>
+                    Tags:
+                    <input
+                        type="text"
+                        className={styles.inputField}
+                        ref={tagsRef}
+                    />
+                    <small>Enter multiple tags separated by commas (e.g., tag1, tag2, tag3)</small>
+                </label>
+
+                <button type="submit" className={styles.button}>
                     Add Product
                 </button>
             </form>
@@ -129,4 +144,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default AdminPage;
