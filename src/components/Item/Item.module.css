@@ -1,13 +1,25 @@
 .item {
     width: 300px;
+    display: flex;
+    flex-direction: column;
 }
 .item img {
     width: 300px;
-    height: 350px;
+    height: 380px;
 }
-.item p {
-    margin: 0px 6px;
+.title {
+    min-height: 2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.title p {
+    font-size: 14px;
     margin-top: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .item-prices {
     display: flex;
@@ -15,7 +27,6 @@
 }
 .item-price-new,
 .item-price-old {
-    margin: 0px 6px;
     font-size: 18px;
 }
 .item-price-new {

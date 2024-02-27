@@ -1,6 +1,7 @@
 section {
     margin-bottom: 20px; /* Adjust the value as needed */
 }
-.product-contianer {
+.product-container {
+    margin: 0;
     margin-top: 7rem;
 }

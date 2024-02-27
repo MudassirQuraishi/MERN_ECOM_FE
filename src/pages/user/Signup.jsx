@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import classes from './LoginSignup.module.css'
-import { emailValidation, passwordValidation, userNameValidation } from '../../utils/validations/validations'
+import { emailValidation, passwordValidation, userNameValidation } from '../../utils/genricFunctions/validations'
 
 const Signup = () => {
     const nameRef = useRef();
@@ -67,7 +67,6 @@ const Signup = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (formIsValid.overall === false) {
             toast.warn('Enter Valid Details', {
                 position: "bottom-left",
@@ -95,7 +94,7 @@ const Signup = () => {
                         render: 'Signup successful',
                         type: 'success',
                     });
-                    navigate('/register/login');
+                    navigate('/login');
 
                 }
 
@@ -103,7 +102,7 @@ const Signup = () => {
             catch (error) {
                 if (error.response.status === 409) {
                     toast.update(toastId, { render: 'Email ID already in use', type: 'error', autoClose: 3000 });
-                    navigate('/register/login');
+                    navigate('/login');
                 }
                 else if (error.response.status === 500) {
                     toast.update(toastId, { render: 'Oops Something went wrong', type: 'error', autoClose: 3000 });

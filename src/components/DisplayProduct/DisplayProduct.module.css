@@ -1,6 +1,6 @@
 .product-display {
     display: flex;
-    margin: 0px 170px;
+    margin: 0px 100px;
 }
 .left {
     display: flex;
@@ -82,6 +82,7 @@
 }
 .category {
     margin-top: 10px;
+    text-transform: capitalize;
 }
 .category span {
     font-weight: 600;

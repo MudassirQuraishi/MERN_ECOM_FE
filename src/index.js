@@ -15,10 +15,10 @@ import UserContextProvider from "./utils/context/UserContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
-        <ShopContextProvider>
-            <UserContextProvider>
+        <UserContextProvider>
+            <ShopContextProvider>
                 <App />
-            </UserContextProvider>
-        </ShopContextProvider>
+            </ShopContextProvider>
+        </UserContextProvider>
     </React.StrictMode>
 );

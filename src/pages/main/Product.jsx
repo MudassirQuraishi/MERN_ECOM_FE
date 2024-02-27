@@ -1,21 +1,36 @@
-import { useContext } from "react"
-import { ShopContext } from '../../utils/context/ShopContext'
+import React, { useContext, useEffect } from "react";
+import { ShopContext } from '../../utils/context/ShopContext';
 import { useParams } from "react-router-dom";
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import DisplayProduct from "../../components/DisplayProduct/DisplayProduct";
 import DescriptionBox from "../../components/DescriptionBox/DescriptionBox";
 import RelatedProducts from "../../components/RelatedProducts/RelatedProducts";
+
+
 const Product = () => {
-    const { all_products } = useContext(ShopContext);
+    const shopCtx = useContext(ShopContext);
     const { productId } = useParams();
-    const product = all_products.find((e) => e.id === Number(productId))
-    return <>
-        <div className="product-contianer">
-            <BreadCrumbs product={product} />
-            <DisplayProduct product={product} />
+
+    useEffect(() => {
+        shopCtx.getProduct(productId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productId]);
+
+    const productData = shopCtx.Product;
+    const relatedProducts = shopCtx.Products
+
+    if (!productData) {
+        return null;
+    }
+
+    return (
+        <div className="product-container">
+            <BreadCrumbs product={productData} />
+            <DisplayProduct product={productData} />
             <DescriptionBox />
-            <RelatedProducts />
+            <RelatedProducts products={relatedProducts} id={productData._id} />
         </div>
-    </>
-}
-export default Product  
+    );
+};
+
+export default Product;

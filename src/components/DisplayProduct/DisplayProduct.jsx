@@ -1,3 +1,4 @@
+import React from 'react'
 import classes from './DisplayProduct.module.css'
 import star_icon from '../../assets/star_icon.png'
 import star_dull_icon from '../../assets/star_dull_icon.png'
@@ -7,19 +8,23 @@ const DisplayProduct = (props) => {
     const { product } = props
     const { addToCart } = useContext(ShopContext)
     const onClickHandler = () => {
-        addToCart(product.id)
+        addToCart(product._id)
+    }
+    if (!product) {
+        return null
     }
     return (
         <div className={classes["product-display"]}>
             <div className={classes.left}>
                 <div className={classes["image-list"]}>
-                    <img src={product.image} alt="" />
-                    <img src={product.image} alt="" />
-                    <img src={product.image} alt="" />
-                    <img src={product.image} alt="" />
+                    {
+                        product.sideImages.map((imageSrc, index) => {
+                            return <img src={imageSrc} alt="" key={index} />
+                        })
+                    }
                 </div>
                 <div className={classes["display-image"]}>
-                    <img className={classes['main-image']} src={product.image} alt="" />
+                    <img className={classes['main-image']} src={product.mainImage} alt="" />
                 </div>
             </div>
             <div className={classes.right}>
@@ -33,8 +38,8 @@ const DisplayProduct = (props) => {
                     <p>(122)</p>
                 </div>
                 <div className={classes.prices}>
-                    <div className={classes["old-price"]}>${product.old_price}</div>
-                    <div className={classes["new-price"]}>${product.new_price}</div>
+                    <div className={classes["old-price"]}>&#8377;{product.originalPrice}</div>
+                    <div className={classes["new-price"]}>&#8377;{product.discountedPrice}</div>
                 </div>
                 <div className={classes.description}>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero, doloremque dolorum. Sequi est cum animi aliquid repellat reiciendis, iusto voluptate?
@@ -51,8 +56,17 @@ const DisplayProduct = (props) => {
                     </div>
                 </div>
                 <button onClick={onClickHandler}>Add To Cart</button>
-                <p className={classes.category}><span>Category :</span>Women, T-shirt, Crop Top </p>
-                <p className={classes.category}><span>Tags :</span>Modern, Latest </p>
+                <p className={classes.category}><span>Category :</span>{product.category}</p>
+                <p className={classes.category}>
+                    <span>Tags :</span>
+                    {product.tags.map((tag, index) => (
+                        <React.Fragment key={tag}>
+                            {tag}
+                            {index !== product.tags.length - 1 && ' , '}
+                        </React.Fragment>
+                    ))}
+                </p>
+
             </div>
         </div>
     )

@@ -1,15 +1,32 @@
 import classes from './RelatedProducts.module.css'
-import data_product from '../../assets/data.js'
 import Item from '../Item/Item.jsx'
-const RelatedProducts = () => {
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};
+const RelatedProducts = (props) => {
+    const { products } = props
+    const shuffledProducts = shuffleArray([...products]);
+    const productsData = shuffledProducts.slice(0, 4);
+
     return (
         <div className={classes["realated-products"]}>
             <h1>Related Products</h1>
             <hr />
             <div className={classes["related-products-item"]}>
-                {data_product.map((item, i) => {
-                    return <Item key={i} id={item.id} name={item.name} image={item.image} old_price={item.old_price} new_price={item.new_price} />
-                })}
+                {productsData.map((item, i) => (
+                    <Item
+                        key={i}
+                        id={item._id}
+                        name={item.name}
+                        image={item.mainImage}
+                        old_price={item.originalPrice}
+                        new_price={item.discountedPrice}
+                    />
+                ))}
             </div>
         </div>
     )

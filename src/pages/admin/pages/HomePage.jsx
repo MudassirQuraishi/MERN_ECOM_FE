@@ -2,6 +2,9 @@
 
 import React, { useRef } from 'react';
 import styles from './HomePage.module.css';
+import Resizer from 'react-image-file-resizer';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const AdminPage = () => {
     const productNameRef = useRef(null);
@@ -11,23 +14,45 @@ const AdminPage = () => {
     const mainImageRef = useRef(null);
     const sideImagesRef = useRef(null);
     const tagsRef = useRef(null);
+    const resizeImage = (file, maxWidth, maxHeight) => {
+        return new Promise((resolve, reject) => {
+            Resizer.imageFileResizer(
+                file,
+                maxWidth,
+                maxHeight,
+                'JPEG', // Adjust the format if needed
+                50, // Quality (adjust as needed)
+                0,
+                (uri) => {
+                    resolve(uri);
+                },
+                'base64'
+            );
+        });
+    };
 
-    const handleMainImageChange = (e) => {
+    // ... (other code)
+
+    const handleMainImageChange = async (e) => {
         const file = e.target.files[0];
-        mainImageRef.current = file;
+        const resizedImage = await resizeImage(file, 800, 600); // Adjust dimensions as needed
+        mainImageRef.current = resizedImage;
     };
 
-    const handleSideImageChange = (e) => {
+    const handleSideImageChange = async (e) => {
         const files = e.target.files;
-        sideImagesRef.current = [...files];
+        const resizedImages = await Promise.all(Array.from(files).map(file => resizeImage(file, 400, 300))); // Adjust dimensions as needed
+        sideImagesRef.current = resizedImages;
     };
 
-    const handleAddProduct = (e) => {
+
+    const handleAddProduct = async (e) => {
         e.preventDefault();
-        if (!productNameRef.current.value || !categoryRef.current.value || !originalPriceRef.current.value || !discountedPriceRef.current.value || !mainImageRef.current || !sideImagesRef.current || !tagsRef.current.value) {
+        if (!productNameRef.current.value || !categoryRef.current.value || !originalPriceRef.current.value || !discountedPriceRef.current.value) {
             alert("Please fill in all the required fields.");
             return;
         }
+
         // Get values from refs
         const productName = productNameRef.current.value;
         const category = categoryRef.current.value;
@@ -37,28 +62,35 @@ const AdminPage = () => {
         const sideImages = sideImagesRef.current;
         const tags = tagsRef.current.value;
 
-        // Split the tags by a comma and trim extra spaces
         const tagsArray = tags.split(',').map(tag => tag.trim());
 
-        // Add product logic goes here
-        // You can use the values and tagsArray to send the data to the server
-        console.log('Product Data:', {
-            productName,
-            category,
-            originalPrice,
-            discountedPrice,
-            mainImage,
-            sideImages,
-            tags: tagsArray
-        });
-        productNameRef.current.value = '';
-        categoryRef.current.value = 'default';
-        originalPriceRef.current.value = '';
-        discountedPriceRef.current.value = '';
-        mainImageRef.current.value = null;
-        sideImagesRef.current.value = null;
-        tagsRef.current.value = '';
+        try {
+            const productData = {
+                name: productName,
+                category: category,
+                originalPrice: originalPrice,
+                discountedPrice: discountedPrice,
+                mainImage: mainImage,
+                sideImages: sideImages,
+                tags: tagsArray
+            }
+            const response = await axios.post('http://localhost:8080/admin/add-product', productData);
+            if (response.status === 201) {
+                toast.success('Product added successfully');
+                e.target.reset();
+            }
+            // 
+        } catch (error) {
+            if (error.response.status === 413) {
+                toast.warn('Size limit exceeded');
+            }
+            else if (error.response.status === 400) {
+                toast.warn('Missing Data');
+            }
+            console.log(error);
+        }
     };
+
 
     return (
         <div className={styles.container}>
@@ -113,6 +145,7 @@ const AdminPage = () => {
                         type="file"
                         className={`${styles.inputField} ${styles.fileInput}`}
                         onChange={handleMainImageChange}
+                        ref={mainImageRef}
                     />
                 </label>
 
@@ -123,6 +156,7 @@ const AdminPage = () => {
                         className={`${styles.inputField} ${styles.fileInput}`}
                         multiple
                         onChange={handleSideImageChange}
+                        ref={sideImagesRef}
                     />
                 </label>
 

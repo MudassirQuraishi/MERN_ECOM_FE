@@ -3,12 +3,14 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import classes from './LoginSignup.module.css'
-import { emailValidation, passwordValidation } from '../../utils/validations/validations'
+import { emailValidation, passwordValidation } from '../../utils/genricFunctions/validations'
 import { UserContext } from "../../utils/context/UserContext"
+import { ShopContext } from '../../utils/context/ShopContext'
 
 
 const Login = () => {
-    const userCtx = useContext(UserContext)
+    const userCtx = useContext(UserContext);
+    const shopCtx = useContext(ShopContext);
 
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -78,6 +80,7 @@ const Login = () => {
                         type: 'success',
                     });
                     const token = response.data.encryptedId;
+                    shopCtx.getCartItems()
                     userCtx.setToken(token)
                     navigate('/');
                 }
