@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
     BrowserRouter,
     Routes,
@@ -26,7 +26,6 @@ import PasswordChange from "./components/PasswordChange/PasswordChange";
 import Login from "./pages/user/Login";
 import Signup from "./pages/user/Signup";
 import AdminDashboard from "./pages/admin/Dashboard/AdminDashboard";
-import { UserContext } from "./utils/context/UserContext";
 
 const FooterWrapper = ({ children }) => {
     const showFooterRoutes = [
@@ -53,21 +52,21 @@ const FooterWrapper = ({ children }) => {
 };
 const NavbarWrapper = () => {
     const { pathname } = useLocation();
-    const publicPaths = ["/login", "/signup"];
+    const publicPaths = ["/login", "/signup", "/admin/login", "/admin/home"];
 
     return !publicPaths.includes(pathname) && <Navbar />;
 };
 
 const PrivateRouteHandler = ({ element }) => {
-    const userCtx = useContext(UserContext);
+    const token = localStorage.getItem("auth-token");
 
     useEffect(() => {
-        if (!userCtx.token) {
+        if (!token) {
             toast.warn("Please login to continue");
         }
-    }, [userCtx.token]);
+    }, [token]);
 
-    return userCtx.token ? element : <Navigate to='/login' replace />;
+    return token ? element : <Navigate to='/login' replace />;
 };
 
 function App() {
@@ -78,6 +77,8 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/' element={<HomePage />} />
+                <Route path='/admin/*' element={<AdminDashboard />} />
+                <Route path='/admin/login' element={<AdminLogin />} />
                 <Route
                     path='/*'
                     element={
@@ -132,14 +133,7 @@ function App() {
                                         />
                                     </Route>
                                     <Route path='/cart' element={<Cart />} />
-                                    <Route
-                                        path='/admin/*'
-                                        element={<AdminDashboard />}
-                                    />
-                                    <Route
-                                        path='/admin/login'
-                                        element={<AdminLogin />}
-                                    />
+
                                     <Route
                                         path='/about-us'
                                         element={<About />}

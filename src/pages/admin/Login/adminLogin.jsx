@@ -6,7 +6,7 @@ import classes from './AdminLogin.module.css'
 const AdminLogin = () => {
     const navigate = useNavigate();
     const handleLogin = () => {
-        navigate('/admin/')
+        navigate('/admin/home')
     }
     return (
         <div className={classes["container-outer"]}>

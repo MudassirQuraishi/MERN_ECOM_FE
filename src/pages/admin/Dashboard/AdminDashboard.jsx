@@ -4,7 +4,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import classes from './AdminDashboard.module.css'
 import HomePage from '../pages/HomePage';
-import ProductsPage from '../pages/ProductsPage';
+// import ProductsPage from '../pages/ProductsPage';
 import Sidebar from '../Sidebar/AdminSidebar';
 
 const AdminDashboard = () => {
@@ -15,7 +15,7 @@ const AdminDashboard = () => {
             <div className={classes['page-container']}>
                 <Routes>
                     <Route path="/home" element={<HomePage />} />
-                    <Route path="/add-product" element={<ProductsPage />} />
+                    {/* <Route path="/add-product" element={<ProductsPage />} /> */}
                 </Routes>
             </div>
 

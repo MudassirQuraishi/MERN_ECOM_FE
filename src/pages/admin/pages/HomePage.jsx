@@ -20,8 +20,8 @@ const AdminPage = () => {
                 file,
                 maxWidth,
                 maxHeight,
-                'JPEG', // Adjust the format if needed
-                50, // Quality (adjust as needed)
+                'JPEG',
+                50,
                 0,
                 (uri) => {
                     resolve(uri);
@@ -35,13 +35,13 @@ const AdminPage = () => {
 
     const handleMainImageChange = async (e) => {
         const file = e.target.files[0];
-        const resizedImage = await resizeImage(file, 800, 600); // Adjust dimensions as needed
+        const resizedImage = await resizeImage(file, 800, 600);
         mainImageRef.current = resizedImage;
     };
 
     const handleSideImageChange = async (e) => {
         const files = e.target.files;
-        const resizedImages = await Promise.all(Array.from(files).map(file => resizeImage(file, 400, 300))); // Adjust dimensions as needed
+        const resizedImages = await Promise.all(Array.from(files).map(file => resizeImage(file, 400, 300)));
         sideImagesRef.current = resizedImages;
     };
 
@@ -53,7 +53,7 @@ const AdminPage = () => {
             return;
         }
 
-        // Get values from refs
+
         const productName = productNameRef.current.value;
         const category = categoryRef.current.value;
         const originalPrice = originalPriceRef.current.value;

@@ -11,10 +11,10 @@ const AdminSidebar = () => {
                 <li className={classes['menu-item']}>
                     <Link to="/admin/home" className={classes['menu-link']}>Home</Link>
                 </li>
-                <li className={classes['menu-item']}>
+                {/* <li className={classes['menu-item']}>
                     <Link to="/admin/add-product" className={classes['menu-link']}>Add Product</Link>
-                </li>
-                {/* Add other links as needed */}
+                </li> */}
+
             </ul>
         </div>
     );

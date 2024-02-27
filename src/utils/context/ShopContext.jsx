@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from 'axios'
 import { isEqual } from 'lodash';
 import { toast } from 'react-toastify';
@@ -20,6 +20,22 @@ export const ShopContext = createContext({
 const ShopContextProvider = (props) => {
     const userCtx = useContext(UserContext);
     const token = userCtx.getToken();
+    const getCartItemsHandler = async () => {
+        try {
+            if (token) {
+
+                const response = await axios.get('http://localhost:8080/api/user/get-cart', {
+                    headers: { authorization: token }
+                });
+                setCartItems(response.data.cart.products)
+            }
+            else {
+                setCartItems([])
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const [cartItems, setCartItems] = useState([])
     const [allProducts, setAllProducts] = useState([]);
@@ -47,7 +63,7 @@ const ShopContextProvider = (props) => {
     };
     const addToCartHandler = async (id) => {
         try {
-            await axios.post(
+            const response = await axios.post(
                 `http://localhost:8080/api/add-to-cart?id=${id}`,
                 {},
                 {
@@ -56,6 +72,7 @@ const ShopContextProvider = (props) => {
                     }
                 }
             );
+            setCartItems(response.data.cart.products)
             toast.success('Added to Cart');
         }
         catch (error) {
@@ -64,22 +81,7 @@ const ShopContextProvider = (props) => {
 
         }
     }
-    const getCartItemsHandler = async () => {
-        try {
-            if (token) {
 
-                const response = await axios.get('http://localhost:8080/api/user/get-cart', {
-                    headers: { authorization: token }
-                });
-                setCartItems(response.data.cart.products)
-            }
-            else {
-                setCartItems([])
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
     const getCartItemsCount = () => {
         try {
             if (cartItems.length > 0) {
@@ -93,6 +95,9 @@ const ShopContextProvider = (props) => {
 
         }
     }
+    useEffect(() => {
+        getCartItemsHandler()
+    }, [])
     const contextValue = {
         Products: allProducts,
         Product: product,
