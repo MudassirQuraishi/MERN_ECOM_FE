@@ -86,7 +86,7 @@ const Signup = () => {
                 toastId = toast('Please wait...', {
                     autoClose: true, hideProgressBar: true
                 });
-                const response = await axios.post('https://mern-ecom-be.onrender.com/auth/signup', formData);
+                const response = await axios.post('https://44.229.200.200:3000/auth/signup', formData);
                 console.log(response)
                 if (response.status === 201) {
                     console.log('201')

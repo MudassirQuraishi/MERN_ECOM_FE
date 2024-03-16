@@ -86,7 +86,7 @@ const Profile = () => {
                 }
                 const token = userCtx.getToken('auth-token');
                 if (token) {
-                    const response = await axios.post('https://mern-ecom-be.onrender.com/auth/reset-password', formData,
+                    const response = await axios.post('https://44.229.200.200:3000/auth/reset-password', formData,
                         {
                             headers: {
                                 Authorization: token
