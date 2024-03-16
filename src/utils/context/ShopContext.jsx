@@ -42,7 +42,7 @@ const ShopContextProvider = (props) => {
     const [product, setProduct] = useState();
     const getProductsHandler = async (path) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api${path}`);
+            const response = await axios.get(`https://mern-ecom-be.onrender.com/api${path}`);
             setAllProducts(response.data.productsData);
         } catch (error) {
             console.error(httpErrorHandler(error.response));
@@ -51,7 +51,7 @@ const ShopContextProvider = (props) => {
     };
     const getProductHandler = async (prodId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product/${prodId}`);
+            const response = await axios.get(`https://mern-ecom-be.onrender.com/api/product/${prodId}`);
             const newProductData = response.data.productData;
             if (!isEqual(newProductData, product)) {
                 setProduct(newProductData);
@@ -64,7 +64,7 @@ const ShopContextProvider = (props) => {
     const addToCartHandler = async (id) => {
         try {
             const response = await axios.post(
-                `http://localhost:8080/api/add-to-cart?id=${id}`,
+                `https://mern-ecom-be.onrender.com/api/add-to-cart?id=${id}`,
                 {},
                 {
                     headers: {

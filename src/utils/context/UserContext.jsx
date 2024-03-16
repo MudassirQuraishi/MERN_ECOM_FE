@@ -16,7 +16,7 @@ const UserContextProvider = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/get-user/${token}`);
+                const response = await axios.get(`https://mern-ecom-be.onrender.com/api/get-user/${token}`);
                 setUser(response.data.USER_DATA);
             } catch (error) {
                 alert('Session Expired. Please Login again')

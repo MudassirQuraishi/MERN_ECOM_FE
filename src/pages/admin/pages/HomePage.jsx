@@ -31,7 +31,6 @@ const AdminPage = () => {
         });
     };
 
-    // ... (other code)
 
     const handleMainImageChange = async (e) => {
         const file = e.target.files[0];
